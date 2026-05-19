@@ -1,0 +1,1771 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+  <title>Bisutería Lucrativa – Aprende a ganar desde casa</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <style>
+    /* ─── RESET & BASE ─────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { font-size: 16px; }
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: #FAF3E8;
+      color: #1a1a1a;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* ─── UTILS ─────────────────────────────────────────────────── */
+    .hidden  { display: none !important; }
+    .gold    { color: #C8961E; }
+    .orange  { color: #C8961E; }
+    .green   { color: #2A7A2A; }
+    .red     { color: #C62828; }
+    .bold    { font-weight: 700; }
+    .white   { color: #fff; }
+
+    /* ─── PURCHASE NOTIFICATION TOAST ─────────────────────────── */
+    #toast-container {
+      position: fixed;
+      bottom: 20px;
+      left: 16px;
+      z-index: 9999;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      pointer-events: none;
+    }
+    .toast {
+      background: #fff;
+      border-radius: 12px;
+      padding: 10px 14px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.18);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      max-width: 290px;
+      transform: translateX(-120%);
+      transition: transform 0.4s cubic-bezier(.34,1.56,.64,1);
+      pointer-events: auto;
+      border-left: 4px solid #C8961E;
+    }
+    .toast.show { transform: translateX(0); }
+    .toast-icon { font-size: 1.5rem; flex-shrink: 0; }
+    .toast-body { flex: 1; }
+    .toast-body .t-name { font-weight: 700; font-size: 0.8rem; color: #1a1a1a; }
+    .toast-body .t-msg  { font-size: 0.73rem; color: #555; margin-top: 1px; line-height: 1.3; }
+    .toast-body .t-time { font-size: 0.68rem; color: #aaa; margin-top: 2px; }
+
+    /* ─── LANDING PAGE ──────────────────────────────────────────── */
+    #screen-landing {
+      max-width: 480px;
+      margin: 0 auto;
+      padding: 0 0 50px;
+    }
+
+    /* Timer bar */
+    .timer-bar {
+      background: #fff8e6;
+      border: 2px solid #C8961E;
+      border-radius: 8px;
+      text-align: center;
+      padding: 10px 16px;
+      margin: 16px 14px 10px;
+      font-size: 0.82rem;
+      font-weight: 700;
+      color: #C8961E;
+      letter-spacing: 0.8px;
+      text-transform: uppercase;
+    }
+
+    /* Hero headline */
+    .landing-hero {
+      text-align: center;
+      padding: 10px 16px 0;
+    }
+    .landing-hero h1 {
+      font-size: 1.55rem;
+      font-weight: 900;
+      line-height: 1.2;
+      color: #1a1a1a;
+      margin-bottom: 4px;
+    }
+    .landing-hero h1 .highlight-box {
+      display: inline-block;
+      background: #C8961E;
+      color: #fff;
+      padding: 2px 8px;
+      border-radius: 4px;
+    }
+
+    /* Intro paragraph */
+    .landing-intro {
+      text-align: center;
+      padding: 10px 16px 0;
+      font-size: 0.92rem;
+      line-height: 1.7;
+      color: #1a1a1a;
+    }
+    .landing-intro .emoji { font-size: 1rem; }
+
+    /* Hero image */
+    .hero-img-wrap {
+      position: relative;
+      margin: 14px 14px 0;
+      border-radius: 14px;
+      overflow: hidden;
+    }
+    .hero-img-wrap img {
+      width: 100%;
+      display: block;
+      border-radius: 14px;
+    }
+    .hero-img-caption {
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      background: linear-gradient(transparent, rgba(0,0,0,0.72));
+      color: #fff;
+      text-align: center;
+      padding: 28px 8px 14px;
+    }
+    .hero-img-caption .name {
+      font-size: 1rem;
+      font-weight: 800;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+    }
+    .hero-img-caption .subtitle {
+      font-size: 0.65rem;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      opacity: 0.88;
+      margin-top: 3px;
+    }
+
+    /* Section text blocks */
+    .section-text {
+      padding: 14px 16px 0;
+      font-size: 0.92rem;
+      line-height: 1.7;
+      text-align: center;
+      color: #1a1a1a;
+    }
+    .section-text .disclaimer {
+      font-weight: 700;
+      font-size: 0.95rem;
+    }
+
+    /* Product image block */
+    .product-img-wrap {
+      margin: 14px 14px 0;
+      border-radius: 12px;
+      overflow: hidden;
+    }
+    .product-img-wrap img {
+      width: 100%;
+      display: block;
+      border-radius: 12px;
+    }
+
+    /* Checklist */
+    .checklist {
+      list-style: none;
+      padding: 0 14px;
+      margin-top: 16px;
+    }
+    .checklist li {
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+      margin-bottom: 9px;
+      font-size: 0.9rem;
+      line-height: 1.45;
+      font-weight: 600;
+      color: #2A7A2A;
+    }
+    .checklist li .icon { font-size: 1rem; flex-shrink: 0; margin-top: 1px; }
+
+    /* Tip text */
+    .tip-text {
+      margin: 14px 14px 0;
+      background: #fff8e6;
+      border-radius: 10px;
+      padding: 12px 14px;
+      font-size: 0.88rem;
+      line-height: 1.6;
+      text-align: center;
+      color: #555;
+    }
+
+    /* ─── PULSE CTA BUTTON ──────────────────────────────────────── */
+    @keyframes pulse-ring {
+      0%   { box-shadow: 0 0 0 0 rgba(200,150,30,0.55); }
+      70%  { box-shadow: 0 0 0 18px rgba(200,150,30,0); }
+      100% { box-shadow: 0 0 0 0 rgba(200,150,30,0); }
+    }
+    .cta-btn {
+      display: block;
+      width: calc(100% - 28px);
+      margin: 18px 14px 0;
+      background: #C8961E;
+      color: #fff;
+      border: none;
+      border-radius: 50px;
+      padding: 15px 20px;
+      font-family: 'Poppins', sans-serif;
+      font-size: 0.95rem;
+      font-weight: 800;
+      cursor: pointer;
+      text-align: center;
+      letter-spacing: 0.3px;
+      animation: pulse-ring 1.8s ease-out infinite;
+      transition: background 0.2s, transform 0.1s;
+    }
+    .cta-btn:hover  { background: #a87a14; animation: none; }
+    .cta-btn:active { transform: scale(0.97); }
+    .cta-btn. { animation: none; }
+
+    .under-btn {
+      text-align: center;
+      font-size: 0.75rem;
+      color: #777;
+      margin-top: 9px;
+      padding: 0 16px;
+    }
+
+    /* ─── QUIZ SHELL ─────────────────────────────────────────────── */
+    .quiz-shell {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      background: #FAF3E8;
+    }
+
+    /* Progress row */
+    .progress-wrap {
+      padding: 18px 16px 0;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      max-width: 480px;
+      margin: 0 auto;
+      width: 100%;
+    }
+    .back-btn {
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-size: 1.4rem;
+      color: #666;
+      flex-shrink: 0;
+      padding: 2px 4px;
+      line-height: 1;
+      font-family: 'Poppins', sans-serif;
+    }
+    .progress-track {
+      flex: 1;
+      height: 8px;
+      background: #e0d3bc;
+      border-radius: 99px;
+      overflow: hidden;
+    }
+    .progress-fill {
+      height: 100%;
+      background: #C8961E;
+      border-radius: 99px;
+      transition: width 0.4s ease;
+    }
+
+    /* Question screen */
+    .question-screen {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 40px 16px 36px;
+      max-width: 480px;
+      margin: 0 auto;
+      width: 100%;
+    }
+    .question-screen h2 {
+      font-size: 1.45rem;
+      font-weight: 800;
+      text-align: center;
+      line-height: 1.25;
+      margin-bottom: 32px;
+      color: #1a1a1a;
+    }
+
+    /* Option cards */
+    .options {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .option-card {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      background: #fff;
+      border: 2px solid #e8dcc8;
+      border-radius: 16px;
+      padding: 15px 16px;
+      cursor: pointer;
+      font-family: 'Poppins', sans-serif;
+      font-size: 0.97rem;
+      font-weight: 600;
+      color: #1a1a1a;
+      transition: border-color 0.15s, box-shadow 0.15s, background 0.15s;
+      text-align: left;
+    }
+    .option-card:hover {
+      border-color: #C8961E;
+      background: #fffbf3;
+      box-shadow: 0 3px 14px rgba(200,150,30,0.2);
+    }
+    .option-card:active { transform: scale(0.98); }
+    .option-icon { font-size: 1.55rem; flex-shrink: 0; }
+    .option-label { flex: 1; }
+    .option-arrow {
+      color: #C8961E;
+      font-size: 1.1rem;
+      font-weight: 900;
+      flex-shrink: 0;
+    }
+
+    /* ─── TRANSITION / OBJECTION SCREENS ────────────────────────── */
+    .transition-screen {
+      max-width: 480px;
+      margin: 0 auto;
+      padding: 24px 16px 44px;
+      width: 100%;
+    }
+    .transition-screen h2 {
+      font-size: 1.35rem;
+      font-weight: 800;
+      text-align: center;
+      line-height: 1.25;
+      margin-bottom: 6px;
+      color: #1a1a1a;
+    }
+    .answer-badge {
+      text-align: center;
+      font-size: 1rem;
+      font-weight: 600;
+      margin-bottom: 18px;
+      color: #555;
+    }
+    .transition-img {
+      width: 100%;
+      max-width: 360px;
+      border-radius: 12px;
+      display: block;
+      margin: 0 auto 18px;
+    }
+    .transition-body {
+      font-size: 0.92rem;
+      line-height: 1.7;
+      text-align: center;
+      margin-bottom: 12px;
+      color: #333;
+    }
+    .transition-highlight {
+      background: #C8961E;
+      color: #fff;
+      font-weight: 700;
+      padding: 12px 16px;
+      border-radius: 10px;
+      text-align: center;
+      font-size: 0.95rem;
+      margin: 16px 0 22px;
+      line-height: 1.5;
+    }
+    .materials-list {
+      list-style: none;
+      padding: 0;
+      margin: 12px 0 16px;
+      text-align: left;
+      background: #fff;
+      border-radius: 12px;
+      padding: 14px 16px;
+    }
+    .materials-list li {
+      padding: 5px 0;
+      font-size: 0.88rem;
+      line-height: 1.5;
+      display: flex;
+      gap: 8px;
+      border-bottom: 1px solid #f0e8d8;
+    }
+    .materials-list li:last-child { border-bottom: none; }
+    .materials-list li .num {
+      font-weight: 700;
+      flex-shrink: 0;
+      color: #C8961E;
+      min-width: 18px;
+    }
+
+    /* ─── SOCIAL PROOF SCREEN ───────────────────────────────────── */
+    .social-screen {
+      max-width: 480px;
+      margin: 0 auto;
+      padding: 24px 16px 44px;
+      width: 100%;
+    }
+    .social-screen h2 {
+      font-size: 1.25rem;
+      font-weight: 800;
+      text-align: center;
+      line-height: 1.3;
+      margin-bottom: 20px;
+      color: #1a1a1a;
+    }
+    .testimonial-card {
+      background: #fff;
+      border-radius: 16px;
+      overflow: hidden;
+      margin-bottom: 16px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+    }
+    .testimonial-card img { width: 100%; display: block; }
+    .testimonial-label {
+      text-align: center;
+      font-size: 0.83rem;
+      font-weight: 600;
+      padding: 10px 12px 12px;
+      color: #666;
+    }
+    .tiktok-proof-text {
+      text-align: center;
+      font-size: 0.9rem;
+      line-height: 1.7;
+      margin-bottom: 16px;
+      color: #333;
+    }
+
+    /* ─── SALES PAGE ─────────────────────────────────────────────── */
+    .sales-screen {
+      max-width: 480px;
+      margin: 0 auto;
+      padding: 24px 16px 60px;
+      width: 100%;
+    }
+    .congrats-badge {
+      text-align: center;
+      color: #C8961E;
+      font-weight: 800;
+      font-size: 0.95rem;
+      margin-bottom: 4px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+    .sales-screen h2 {
+      font-size: 1.25rem;
+      font-weight: 900;
+      text-align: center;
+      line-height: 1.3;
+      margin-bottom: 18px;
+      color: #1a1a1a;
+    }
+    .sales-screen h2 .g { color: #C8961E; }
+
+    /* Benefits */
+    .benefits-list {
+      list-style: none;
+      padding: 0;
+      margin-bottom: 18px;
+      background: #fff;
+      border-radius: 14px;
+      padding: 14px 16px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+    }
+    .benefits-list li {
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+      font-size: 0.87rem;
+      line-height: 1.55;
+      padding: 5px 0;
+      border-bottom: 1px solid #f5ede0;
+      color: #1a1a1a;
+    }
+    .benefits-list li:last-child { border-bottom: none; }
+    .benefits-list li .bi { flex-shrink: 0; font-size: 0.9rem; margin-top: 2px; }
+
+    /* ─── BONUS PREMIUM SECTION ─────────────────────────────────── */
+    .bonus-header {
+      text-align: center;
+      margin: 22px 0 14px;
+    }
+    .bonus-header h3 {
+      font-size: 1rem;
+      font-weight: 900;
+      color: #C8961E;
+      line-height: 1.35;
+    }
+    .bonus-header p {
+      font-size: 0.8rem;
+      color: #777;
+      margin-top: 4px;
+    }
+
+    .bonus-card {
+      background: #fff;
+      border: 2px solid #e8dcc8;
+      border-radius: 14px;
+      padding: 14px 16px;
+      margin-bottom: 10px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+      position: relative;
+      overflow: hidden;
+    }
+    .bonus-card::before {
+      content: '';
+      position: absolute;
+      left: 0; top: 0; bottom: 0;
+      width: 4px;
+      background: #C8961E;
+      border-radius: 4px 0 0 4px;
+    }
+    .bonus-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 6px;
+    }
+    .bonus-tag {
+      display: inline-block;
+      background: #C8961E;
+      color: #fff;
+      font-size: 0.65rem;
+      font-weight: 800;
+      padding: 3px 10px;
+      border-radius: 20px;
+      letter-spacing: 0.8px;
+      text-transform: uppercase;
+    }
+    .bonus-price-wrap {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+    }
+    .bonus-price-old {
+      font-size: 0.78rem;
+      color: #aaa;
+      text-decoration: line-through;
+      font-weight: 600;
+    }
+    .bonus-price-free {
+      font-size: 0.82rem;
+      font-weight: 800;
+      color: #2A7A2A;
+      background: #e8f5e9;
+      padding: 2px 9px;
+      border-radius: 20px;
+    }
+    .bonus-card p {
+      font-size: 0.85rem;
+      line-height: 1.5;
+      color: #333;
+    }
+    .bonus-card p strong { color: #1a1a1a; }
+
+    /* Total value box */
+    .total-value-box {
+      background: #fff;
+      border: 2.5px solid #C8961E;
+      border-radius: 14px;
+      padding: 18px 18px;
+      margin: 16px 0;
+      text-align: center;
+    }
+    .total-value-box .tv-label {
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: #888;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 4px;
+    }
+    .total-value-box .tv-old {
+      font-size: 1rem;
+      text-decoration: line-through;
+      color: #bbb;
+      font-weight: 700;
+    }
+    .total-value-box .tv-today {
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: #2A7A2A;
+      margin: 6px 0 2px;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+    }
+    .total-value-box .tv-price {
+      font-size: 2.2rem;
+      font-weight: 900;
+      color: #C8961E;
+    }
+    .total-value-box .tv-price sup {
+      font-size: 1rem;
+      vertical-align: super;
+    }
+    .total-value-box .tv-sub {
+      font-size: 0.73rem;
+      color: #999;
+      margin-top: 4px;
+    }
+
+    /* ─── PRICE BOX ─────────────────────────────────────────────── */
+    .price-section {
+      margin: 20px 0 10px;
+    }
+    .price-section .ps-label {
+      text-align: center;
+      font-size: 0.82rem;
+      font-weight: 700;
+      color: #555;
+      margin-bottom: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .price-box {
+      background: #fff;
+      border: 2.5px solid #C8961E;
+      border-radius: 18px;
+      padding: 22px 18px 18px;
+      text-align: center;
+      box-shadow: 0 4px 20px rgba(200,150,30,0.15);
+      position: relative;
+      overflow: hidden;
+    }
+    .price-box::after {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 4px;
+      background: #C8961E;
+    }
+    .price-box .pb-badge {
+      display: inline-block;
+      background: #C8961E;
+      color: #fff;
+      font-size: 0.7rem;
+      font-weight: 800;
+      padding: 4px 14px;
+      border-radius: 20px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 12px;
+    }
+    .price-box .pb-name {
+      font-size: 1rem;
+      font-weight: 800;
+      color: #1a1a1a;
+      margin-bottom: 10px;
+    }
+    .price-box .pb-old {
+      font-size: 0.9rem;
+      color: #aaa;
+      text-decoration: line-through;
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+    .price-box .pb-price {
+      font-size: 2.6rem;
+      font-weight: 900;
+      color: #1a1a1a;
+      line-height: 1;
+      margin-bottom: 4px;
+    }
+    .price-box .pb-price sup {
+      font-size: 1.2rem;
+      vertical-align: super;
+      font-weight: 700;
+    }
+    .price-box .pb-price .cents {
+      font-size: 1.6rem;
+      font-weight: 900;
+    }
+    .price-box .pb-tag {
+      font-size: 0.75rem;
+      color: #777;
+      margin-bottom: 14px;
+    }
+    .price-box .pb-includes {
+      text-align: left;
+      font-size: 0.8rem;
+      color: #444;
+      list-style: none;
+      margin-bottom: 14px;
+    }
+    .price-box .pb-includes li {
+      padding: 3px 0;
+      display: flex;
+      gap: 6px;
+      align-items: flex-start;
+    }
+
+    /* Scarcity */
+    .scarcity {
+      text-align: center;
+      font-size: 0.8rem;
+      color: #C62828;
+      font-weight: 700;
+      margin: 10px 0 6px;
+      animation: blink 2s ease-in-out infinite;
+    }
+    @keyframes blink {
+      0%,100% { opacity: 1; }
+      50%      { opacity: 0.65; }
+    }
+
+    /* Trust badges */
+    .trust-row {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 8px;
+      margin: 14px 0 8px;
+      flex-wrap: wrap;
+    }
+    .trust-badge {
+      background: #fff;
+      border: 1.5px solid #e8dcc8;
+      border-radius: 8px;
+      padding: 6px 10px;
+      font-size: 0.7rem;
+      font-weight: 600;
+      color: #444;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    /* Guarantee */
+    .guarantee-box {
+      border: 2.5px solid #C8961E;
+      border-radius: 16px;
+      padding: 20px 16px;
+      text-align: center;
+      margin: 20px 0;
+      background: #fffbf0;
+    }
+    .guarantee-box .g-icon { font-size: 2.8rem; margin-bottom: 8px; }
+    .guarantee-box h3 {
+      font-size: 0.95rem;
+      font-weight: 800;
+      margin-bottom: 8px;
+      color: #1a1a1a;
+    }
+    .guarantee-box p {
+      font-size: 0.83rem;
+      line-height: 1.6;
+      color: #555;
+    }
+
+    /* Mini reviews */
+    .mini-review {
+      background: #fff;
+      border-radius: 12px;
+      padding: 14px 16px;
+      margin-bottom: 10px;
+      box-shadow: 0 1px 8px rgba(0,0,0,0.06);
+    }
+    .mini-review .stars { color: #F9A825; font-size: 0.9rem; margin-bottom: 3px; }
+    .mini-review .reviewer {
+      font-weight: 700;
+      font-size: 0.82rem;
+      color: #888;
+      margin-bottom: 5px;
+    }
+    .mini-review p { font-size: 0.85rem; line-height: 1.55; color: #333; }
+
+    /* Bio */
+    .bio-section {
+      text-align: center;
+      padding: 10px 0 20px;
+    }
+    .bio-section img {
+      width: 100%;
+      border-radius: 12px;
+      margin-bottom: 12px;
+    }
+    .bio-section h3 {
+      font-size: 1rem;
+      font-weight: 800;
+      margin-bottom: 8px;
+    }
+    .bio-section p {
+      font-size: 0.85rem;
+      line-height: 1.7;
+      color: #444;
+      text-align: left;
+      margin-bottom: 10px;
+    }
+
+    /* ─── FAQ ─── */
+    .faq-list { margin-bottom: 24px; }
+    .faq-item {
+      border: 1.5px solid #e8dcc8;
+      border-radius: 12px;
+      margin-bottom: 10px;
+      overflow: hidden;
+      background: #fff;
+    }
+    .faq-q {
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      background: none;
+      border: none;
+      padding: 14px 16px;
+      font-family: 'Poppins', sans-serif;
+      font-size: 0.88rem;
+      font-weight: 700;
+      color: #1a1a1a;
+      cursor: pointer;
+      text-align: left;
+      line-height: 1.4;
+    }
+    .faq-q:hover { background: #fffbf3; }
+    .faq-icon {
+      font-size: 1.3rem;
+      font-weight: 400;
+      color: #C8961E;
+      flex-shrink: 0;
+      transition: transform 0.25s;
+      line-height: 1;
+    }
+    .faq-q.open .faq-icon { transform: rotate(45deg); }
+    .faq-a {
+      display: none;
+      padding: 0 16px 14px;
+      font-size: 0.85rem;
+      line-height: 1.65;
+      color: #444;
+      border-top: 1px solid #f0e8d8;
+    }
+    .faq-a.open { display: block; }
+
+    /* ─── ESTILOS SLIDER ─── */
+    .est-slider {
+      position: relative;
+      border-radius: 14px;
+      overflow: hidden;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.1);
+    }
+    .est-track {
+      display: flex;
+      transition: transform 0.4s ease;
+    }
+    .est-slide {
+      min-width: 100%;
+    }
+    .est-slide img {
+      width: 100%;
+      display: block;
+      object-fit: contain;
+      background: #f5ede0;
+    }
+    .est-dots {
+      position: absolute;
+      bottom: 10px;
+      left: 0; right: 0;
+      display: flex;
+      justify-content: center;
+      gap: 6px;
+      flex-wrap: wrap;
+      padding: 0 8px;
+    }
+    .est-dot {
+      width: 7px; height: 7px;
+      border-radius: 50%;
+      border: none;
+      background: rgba(255,255,255,0.5);
+      cursor: pointer;
+      padding: 0;
+      transition: background 0.2s;
+    }
+    .est-dot.active { background: #fff; }
+
+    /* ─── DEPOIMENTOS SLIDER ─── */
+    .dp-slider {
+      position: relative;
+      border-radius: 16px;
+      overflow: hidden;
+      margin-bottom: 16px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.1);
+    }
+    .dp-track {
+      display: flex;
+      transition: transform 0.4s ease;
+    }
+    .dp-slide {
+      min-width: 100%;
+    }
+    .dp-slide img {
+      width: 100%;
+      display: block;
+    }
+    .dp-dots {
+      position: absolute;
+      bottom: 10px;
+      left: 0; right: 0;
+      display: flex;
+      justify-content: center;
+      gap: 7px;
+    }
+    .dp-dot {
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      border: none;
+      background: rgba(255,255,255,0.5);
+      cursor: pointer;
+      padding: 0;
+      transition: background 0.2s;
+    }
+    .dp-dot.active { background: #fff; }
+    .dp-prev, .dp-next {
+      position: absolute;
+      top: 50%; transform: translateY(-50%);
+      background: rgba(255,255,255,0.8);
+      border: none;
+      border-radius: 50%;
+      width: 34px; height: 34px;
+      font-size: 1.3rem;
+      line-height: 1;
+      cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+      color: #1a1a1a;
+    }
+    .dp-prev { left: 8px; }
+    .dp-next { right: 8px; }
+
+    /* Divider */
+    .divider {
+      height: 1px;
+      background: #e8dcc8;
+      margin: 20px 0;
+    }
+
+    /* Section heading */
+    .section-heading {
+      font-size: 1.05rem;
+      font-weight: 800;
+      text-align: center;
+      margin-bottom: 14px;
+      color: #1a1a1a;
+    }
+  </style>
+</head>
+<body>
+
+<!-- ════════════════════════════════════════════════════
+     PURCHASE NOTIFICATIONS
+════════════════════════════════════════════════════ -->
+<div id="toast-container"></div>
+
+<!-- ════════════════════════════════════════════════════
+     SCREEN 0 — LANDING PAGE
+════════════════════════════════════════════════════ -->
+<div id="screen-landing">
+
+  <div class="timer-bar">
+    ⏳ Oferta por tiempo limitado: <span id="timer">09:59</span>
+  </div>
+
+  <div class="landing-hero">
+    <h1>INGRESO EXTRA EN CASA:<br>
+      <span class="highlight-box">BISUTERÍA LUCRATIVA</span>
+    </h1>
+  </div>
+
+  <div class="landing-intro">
+    <p>Hola, me llamo <strong>Camila Marquez</strong> y trabajo con bisutería artesanal desde 2023. 💎</p>
+    <br>
+    <p>🎯 Exploré mi creatividad y descubrí una forma <strong class="orange">SIMPLE</strong> y <strong class="orange">RÁPIDA</strong> de ganar <strong class="green">MÁS DE $500 USD AL MES</strong>, trabajando desde casa y con poca inversión.</p>
+  </div>
+
+  <div class="hero-img-wrap">
+    <img src="images/bia1.png" alt="Camila Marquez" />
+  </div>
+
+  <div class="section-text">
+    <p class="disclaimer"><strong>Y no, no tiene nada que ver con esas bisuterías infantiles de juguetería.</strong></p>
+    <br>
+    <p>Hablo de bisutería <strong class="orange">elegante y sofisticada</strong>, con apariencia de joyas finas, piezas únicas que encantan y venden <strong class="orange">MUCHO</strong>, incluso para quienes están comenzando ahora.</p>
+  </div>
+
+  <div class="product-img-wrap">
+    <img src="images/img2.png" alt="Pulseras artesanales" />
+  </div>
+
+  <div class="section-text">
+    <p>Son piezas con <strong class="orange">alto valor percibido</strong>, que produces con <strong class="green">bajo costo</strong> y vendes con <strong class="orange">ALTO MARGEN DE GANANCIA</strong>.</p>
+    <br>
+    <p>💡 <strong>¿Lo mejor?</strong> Puedes <strong>empezar desde cero</strong>, sin necesidad de mucha inversión, sin salir de casa.</p>
+  </div>
+
+  <ul class="checklist">
+    <li><span class="icon">✅</span> Comienza con baja inversión y alto margen de ganancia</li>
+    <li><span class="icon">✅</span> Crea piezas modernas y deseadas, que realmente se venden</li>
+    <li><span class="icon">✅</span> Técnica simple, incluso si nunca hiciste artesanía</li>
+    <li><span class="icon">✅</span> Alta demanda todo el año, clientes apasionadas por accesorios exclusivos</li>
+  </ul>
+
+  <div class="tip-text">
+    💡 Si buscas una forma de emprender con artesanía moderna, bonita y lucrativa, <strong>este es el camino correcto.</strong>
+  </div>
+
+  <button class="cta-btn" onclick="startQuiz()">Quiero aprender →</button>
+  <p class="under-btn">✨ Responde un breve cuestionario y recibe tu plan personalizado</p>
+
+</div><!-- /screen-landing -->
+
+
+<!-- ════════════════════════════════════════════════════
+     SCREEN 1 — PREGUNTA 1: Tiempo disponible
+════════════════════════════════════════════════════ -->
+<div id="screen-q1" class="quiz-shell hidden">
+  <div class="progress-wrap">
+    <button class="back-btn" onclick="goBack(0)">←</button>
+    <div class="progress-track"><div class="progress-fill" style="width:20%"></div></div>
+  </div>
+  <div class="question-screen">
+    <h2>¿Tienes tiempo disponible para aprender? ⏳</h2>
+    <div class="options">
+      <button class="option-card" onclick="nextStep(2)">
+        <span class="option-icon">🙌</span>
+        <span class="option-label">Tengo bastante tiempo libre</span>
+        <span class="option-arrow">›</span>
+      </button>
+      <button class="option-card" onclick="nextStep(2)">
+        <span class="option-icon">😅</span>
+        <span class="option-label">Unas 3 horas por día</span>
+        <span class="option-arrow">›</span>
+      </button>
+      <button class="option-card" onclick="nextStep(2)">
+        <span class="option-icon">🤯</span>
+        <span class="option-label">Muy poco tiempo, ya trabajo</span>
+        <span class="option-arrow">›</span>
+      </button>
+    </div>
+  </div>
+</div>
+
+
+<!-- ════════════════════════════════════════════════════
+     SCREEN 2 — PREGUNTA 2: Presupuesto
+════════════════════════════════════════════════════ -->
+<div id="screen-q2" class="quiz-shell hidden">
+  <div class="progress-wrap">
+    <button class="back-btn" onclick="goBack(1)">←</button>
+    <div class="progress-track"><div class="progress-fill" style="width:40%"></div></div>
+  </div>
+  <div class="question-screen">
+    <h2>¿Cuál es tu presupuesto para materiales?</h2>
+    <div class="options">
+      <button class="option-card" onclick="nextStep(3)">
+        <span class="option-icon">🏷️</span>
+        <span class="option-label">Menos de $5 USD</span>
+        <span class="option-arrow">›</span>
+      </button>
+      <button class="option-card" onclick="nextStep(3)">
+        <span class="option-icon">💰</span>
+        <span class="option-label">$5 a $15 USD</span>
+        <span class="option-arrow">›</span>
+      </button>
+      <button class="option-card" onclick="nextStep(3)">
+        <span class="option-icon">🤑</span>
+        <span class="option-label">$15 a $30 USD</span>
+        <span class="option-arrow">›</span>
+      </button>
+      <button class="option-card" onclick="nextStep(3)">
+        <span class="option-icon">💎</span>
+        <span class="option-label">Más de $30 USD</span>
+        <span class="option-arrow">›</span>
+      </button>
+    </div>
+  </div>
+</div>
+
+
+<!-- ════════════════════════════════════════════════════
+     SCREEN 3 — PREGUNTA 3: Estilo
+════════════════════════════════════════════════════ -->
+<div id="screen-q3" class="quiz-shell hidden">
+  <div class="progress-wrap">
+    <button class="back-btn" onclick="goBack(2)">←</button>
+    <div class="progress-track"><div class="progress-fill" style="width:55%"></div></div>
+  </div>
+  <div class="question-screen">
+    <h2>¿Qué estilo de bisutería prefieres? ❤️</h2>
+    <div class="options">
+      <button class="option-card" onclick="nextStep(4)">
+        <span class="option-icon">🎀</span>
+        <span class="option-label">Minimalista y delicada</span>
+        <span class="option-arrow">›</span>
+      </button>
+      <button class="option-card" onclick="nextStep(4)">
+        <span class="option-icon">🎉</span>
+        <span class="option-label">Coloridas y modernas</span>
+        <span class="option-arrow">›</span>
+      </button>
+      <button class="option-card" onclick="nextStep(4)">
+        <span class="option-icon">💎</span>
+        <span class="option-label">Con piedras naturales</span>
+        <span class="option-arrow">›</span>
+      </button>
+    </div>
+  </div>
+</div>
+
+
+<!-- ════════════════════════════════════════════════════
+     SCREEN 4 — PREGUNTA 4: Mayor desafío
+════════════════════════════════════════════════════ -->
+<div id="screen-q4" class="quiz-shell hidden">
+  <div class="progress-wrap">
+    <button class="back-btn" onclick="goBack(3)">←</button>
+    <div class="progress-track"><div class="progress-fill" style="width:70%"></div></div>
+  </div>
+  <div class="question-screen">
+    <h2>¿Cuál es tu mayor desafío para comenzar? 💪</h2>
+    <div class="options">
+      <button class="option-card" onclick="nextStep(5)">
+        <span class="option-icon">❓</span>
+        <span class="option-label">Técnicas de montaje</span>
+        <span class="option-arrow">›</span>
+      </button>
+      <button class="option-card" onclick="nextStep(5)">
+        <span class="option-icon">📏</span>
+        <span class="option-label">Elección de materiales</span>
+        <span class="option-arrow">›</span>
+      </button>
+      <button class="option-card" onclick="nextStep(5)">
+        <span class="option-icon">🎨</span>
+        <span class="option-label">Creatividad en los diseños</span>
+        <span class="option-arrow">›</span>
+      </button>
+      <button class="option-card" onclick="nextStep(5)">
+        <span class="option-icon">💲</span>
+        <span class="option-label">Precios y ventas</span>
+        <span class="option-arrow">›</span>
+      </button>
+    </div>
+  </div>
+</div>
+
+
+<!-- ════════════════════════════════════════════════════
+     SCREEN 5 — OBJECIÓN 1: Experiencia
+════════════════════════════════════════════════════ -->
+<div id="screen-obj1" class="quiz-shell hidden">
+  <div class="progress-wrap">
+    <button class="back-btn" onclick="goBack(4)">←</button>
+    <div class="progress-track"><div class="progress-fill" style="width:80%"></div></div>
+  </div>
+  <div class="transition-screen">
+    <h2>¿Es necesario tener experiencia en artesanía, Camila?</h2>
+    <div class="answer-badge">La respuesta es <span class="red bold">¡NO!</span></div>
+
+    <img class="transition-img" src="images/img3.png" alt="Pulseras de mostacilla elegantes" />
+
+    <p class="transition-body">
+      <strong>Aunque nunca hayas hecho artesanía antes</strong>, con los materiales correctos y mi entrenamiento paso a paso, vas a aprender a hacer bisutería linda y elegante. 💛🎨
+    </p>
+    <p class="transition-body">
+      No necesitas experiencia ni habilidad manual. Te muestro <strong>cada detalle del proceso</strong>, desde la elección de los materiales hasta los acabados que marcan la diferencia.
+    </p>
+    <p class="transition-body">
+      Con técnicas simples y accesibles, vas a transformar hilos, piedritas y cierres en piezas que parecen hechas por profesionales.
+    </p>
+    <div class="transition-highlight">
+      ✨ ¡Te vas a sorprender con lo que eres capaz de crear con tus propias manos!
+    </div>
+
+    <button class="cta-btn " onclick="nextStep(6)">Quiero aprender paso a paso →</button>
+  </div>
+</div>
+
+
+<!-- ════════════════════════════════════════════════════
+     SCREEN 6 — OBJECIÓN 2: Costo
+════════════════════════════════════════════════════ -->
+<div id="screen-obj2" class="quiz-shell hidden">
+  <div class="progress-wrap">
+    <button class="back-btn" onclick="goBack(5)">←</button>
+    <div class="progress-track"><div class="progress-fill" style="width:88%"></div></div>
+  </div>
+  <div class="transition-screen">
+    <h2>¿Es caro comenzar, Camila? 😬</h2>
+    <div class="answer-badge">La respuesta <span class="orange bold">TAMBIÉN</span> es <span class="red bold">¡NO!</span></div>
+
+    <p class="transition-body">
+      El costo para empezar a hacer bisutería artesanal elegante es <strong>muy bajo</strong>, especialmente si comienzas con modelos simples.
+    </p>
+
+    <p class="transition-body" style="font-weight:700;color:#C8961E;">💰 ¿Cuánto cuesta empezar a hacer bisutería artesanal?</p>
+
+    <img class="transition-img" src="images/img4.jpg" alt="Materiales básicos de bisutería" />
+
+    <p class="transition-body" style="font-weight:700;text-align:left;">Materiales básicos (aproximadamente 20 a 40 piezas):</p>
+    <ul class="materials-list">
+      <li><span class="num">1.</span><span>Hilo de nylon, elástico o gamuza: <strong class="green">$1 a $4 USD</strong></span></li>
+      <li><span class="num">2.</span><span>Mostacillas, piedras, cristales o cuentas: <strong class="green">$3 a $10 USD</strong></span></li>
+      <li><span class="num">3.</span><span>Cierres (paquete de 10 o más): <strong class="green">$1 a $5 USD</strong></span></li>
+      <li><span class="num">4.</span><span>Pinza pequeña de bisutería: <strong class="green">$4 a $8 USD</strong> (compra única)</span></li>
+      <li><span class="num">5.</span><span>Tijeras: probablemente ya las tienes ✂️</span></li>
+    </ul>
+
+    <div class="transition-highlight">
+      💎 Con eso ya produces <span style="text-decoration:underline;font-weight:800">DIVERSAS PIEZAS</span> y puedes empezar a ganar <strong>$100 USD O MÁS</strong>. ¡Y seguramente te enamorarás tanto que querrás usarlas antes de venderlas! 😅😄
+    </div>
+
+    <button class="cta-btn " onclick="nextStep(7)">Quiero comenzar →</button>
+  </div>
+</div>
+
+
+<!-- ════════════════════════════════════════════════════
+     SCREEN 7 — PRUEBA SOCIAL
+════════════════════════════════════════════════════ -->
+<div id="screen-social" class="quiz-shell hidden">
+  <div class="progress-wrap">
+    <button class="back-btn" onclick="goBack(6)">←</button>
+    <div class="progress-track"><div class="progress-fill" style="width:94%"></div></div>
+  </div>
+  <div class="social-screen">
+    <h2>Mira lo que nuestras alumnas están diciendo del entrenamiento <span class="gold">Bisutería Lucrativa</span> 😍</h2>
+
+    <!-- Slider depoimentos WhatsApp -->
+    <div class="dp-slider">
+      <div class="dp-track" id="dpTrack">
+        <div class="dp-slide"><img src="images/dp1.jpg" alt="Depoimento 1" /></div>
+        <div class="dp-slide"><img src="images/dp2.jpg" alt="Depoimento 2" /></div>
+      </div>
+      <div class="dp-dots">
+        <button class="dp-dot active" onclick="dpGo(0)"></button>
+        <button class="dp-dot" onclick="dpGo(1)"></button>
+      </div>
+      <button class="dp-prev" onclick="dpPrev()">‹</button>
+      <button class="dp-next" onclick="dpNext()">›</button>
+    </div>
+
+    <p class="tiktok-proof-text">
+      Aquí hay un video de una de nuestras alumnas, <strong class="orange">lo publicó en TikTok</strong> y <strong class="gold">¡la pulsera fue un boom!</strong> Se llenó de comentarios preguntando dónde comprar. 😍 Ella envió por correo y hoy tiene su tienda online. 📱
+    </p>
+
+    <div class="testimonial-card">
+      <img src="images/dp3.jpg" alt="TikTok viral con comentarios" />
+    </div>
+
+    <button class="cta-btn " onclick="nextStep(8)">Quiero aprender paso a paso →</button>
+  </div>
+</div>
+
+
+<!-- ════════════════════════════════════════════════════
+     SCREEN 8 — PÁGINA DE VENTAS (TSL Final)
+════════════════════════════════════════════════════ -->
+<div id="screen-sales" class="quiz-shell hidden">
+  <div class="sales-screen">
+
+    <div class="congrats-badge" style="color:#2A7A2A;font-size:1.1rem">¡FELICITACIONES!</div>
+    <p style="text-align:center;font-size:1.1rem;font-weight:800;color:#1a1a1a;margin-bottom:14px;line-height:1.35;padding:0 4px">Estás calificada para participar del entrenamiento <span style="color:#C8961E">BISUTERÍA LUCRATIVA</span> 🎉</p>
+
+    <h2>Mira todo lo que vas a aprender con <span class="g">Bisutería Lucrativa</span> 💎</h2>
+
+    <ul class="benefits-list">
+      <li><span class="bi">✅</span><span><strong>Acceso vitalicio</strong>, accede siempre que quieras</span></li>
+      <li><span class="bi">✅</span><span><strong>Videos paso a paso</strong>, explicando el proceso de producción de cada pieza</span></li>
+      <li><span class="bi">✅</span><span>Aprende a hacer bisutería linda y profesional, <strong>incluso comenzando desde cero</strong></span></li>
+      <li><span class="bi">✅</span><span><strong>Técnicas fáciles</strong> con distintos tipos de materiales</span></li>
+      <li><span class="bi">✅</span><span>Cuáles son los <strong>materiales esenciales</strong> y dónde comprarlos</span></li>
+      <li><span class="bi">✅</span><span>Cómo hacer <strong>acabados perfectos</strong></span></li>
+      <li><span class="bi">✅</span><span>Cómo elegir <strong>colores y cierres</strong> que encantan a los clientes</span></li>
+      <li><span class="bi">✅</span><span>Cómo vender en <strong>redes sociales</strong> y atraer a tus primeras clientas</span></li>
+      <li><span class="bi">✅</span><span>Método para <strong>ganar $500 USD al mes</strong> con tus pulseras artesanales</span></li>
+      <li><span class="bi">✅</span><span><strong>Lista completa</strong> de materiales y herramientas necesarias</span></li>
+      <li><span class="bi">✅</span><span>Cómo montar un <strong>espacio simple</strong> en tu hogar</span></li>
+      <li><span class="bi">✅</span><span>Ideas de <strong>empaques y etiquetas</strong> lindas para valorizar tus piezas</span></li>
+      <li><span class="bi">✅</span><span>Cómo <strong>calcular el precio ideal</strong> y ganar 100% en cada venta</span></li>
+      <li><span class="bi">✅</span><span>Tips para <strong>fidelizar clientas</strong> y crear tu marca propia</span></li>
+      <li><span class="bi">✅</span><span>Estilos de bisutería que están <strong>en tendencia en 2025</strong></span></li>
+      <li><span class="bi">✅</span><span>Estrategias de <strong>posts y reels</strong> para crear seguidores y clientas</span></li>
+    </ul>
+
+    <!-- ── BONUS PREMIUM ── -->
+    <div class="bonus-header">
+      <h3>🎁 Gana 4 BONOS EXCLUSIVOS<br>al garantizar tu acceso AHORA:</h3>
+      <p>Valor total de bonos: <strong style="color:#C62828;text-decoration:line-through">$94 USD</strong> → incluidos gratis</p>
+    </div>
+
+    <div class="bonus-card">
+      <div class="bonus-top">
+        <span class="bonus-tag">Bono 1</span>
+        <div class="bonus-price-wrap">
+          <span class="bonus-price-old">$27 USD</span>
+          <span class="bonus-price-free">✓ GRATIS</span>
+        </div>
+      </div>
+      <p>🤫 <strong>Mi método secreto:</strong> cómo vendo bisutería todos los días, incluso comenzando con pocos seguidores.</p>
+    </div>
+
+    <div class="bonus-card">
+      <div class="bonus-top">
+        <span class="bonus-tag">Bono 2</span>
+        <div class="bonus-price-wrap">
+          <span class="bonus-price-old">$17 USD</span>
+          <span class="bonus-price-free">✓ GRATIS</span>
+        </div>
+      </div>
+      <p>📱 <strong>Acceso vitalicio</strong> al entrenamiento para ver siempre que quieras, a tu propio ritmo, en cualquier dispositivo.</p>
+    </div>
+
+    <div class="bonus-card">
+      <div class="bonus-top">
+        <span class="bonus-tag">Bono 3</span>
+        <div class="bonus-price-wrap">
+          <span class="bonus-price-old">$27 USD</span>
+          <span class="bonus-price-free">✓ GRATIS</span>
+        </div>
+      </div>
+      <p>🎨 <strong>Broches y colores que conquistan:</strong> descubre cómo producir combinaciones que encantan a los clientes y te destacan por tu estilo y delicadeza.</p>
+    </div>
+
+    <div class="bonus-card">
+      <div class="bonus-top">
+        <span class="bonus-tag">Bono 4</span>
+        <div class="bonus-price-wrap">
+          <span class="bonus-price-old">$23 USD</span>
+          <span class="bonus-price-free">✓ GRATIS</span>
+        </div>
+      </div>
+      <p>📿 <strong>Rosarios de mostacillas:</strong> uno de los más fáciles de hacer y con alta demanda para presentaciones y regalos. ¡Aprende a crearlos!</p>
+    </div>
+
+    <!-- Bloco CTA pós-bônus -->
+    <div style="text-align:center;margin:24px 0 12px;padding:0 4px">
+      <p style="font-size:0.82rem;font-weight:700;color:#555;text-transform:uppercase;letter-spacing:0.6px;margin-bottom:6px">HAZ CLIC EN EL BOTÓN DE ABAJO Y ADQUIERE EL ENTRENAMIENTO</p>
+      <p style="font-size:1.05rem;font-weight:900;color:#1a1a1a;line-height:1.3;margin-bottom:10px"><span style="color:#C8961E">BISUTERÍA LUCRATIVA</span> + 4 BONOS EXCLUSIVOS</p>
+      <p style="font-size:0.92rem;font-weight:700;color:#1a1a1a;margin-bottom:2px">Garantiza tus bonos y tu lugar</p>
+      <p style="font-size:0.95rem;font-weight:700;color:#1a1a1a">Haz clic en el botón abajo 👇</p>
+    </div>
+
+    <!-- Bloco oferta -->
+    <div class="price-section">
+      <div class="price-box">
+        <div class="pb-badge">🔥 Oferta especial</div>
+        <div class="pb-name">Bisutería Lucrativa + 4 Bonos</div>
+        <div class="pb-old" style="color:#C62828;text-decoration:line-through;font-weight:700">De $141 USD</div>
+        <div class="pb-price"><sup>USD </sup>9<span class="cents">.90</span></div>
+        <div class="pb-tag">pago único · acceso inmediato</div>
+        <div style="font-size:0.78rem;color:#777;margin-top:4px">o en <strong style="color:#1a1a1a">9x de $1.10 USD</strong></div>
+      </div>
+    </div>
+
+    <button class="cta-btn " onclick="goCheckout()" style="font-size:1.05rem;padding:20px 24px">
+      Quiero ganar dinero en casa
+    </button>
+
+    <div style="background:#C62828;color:#fff;font-weight:800;font-size:0.76rem;text-align:center;border-radius:8px;padding:7px 12px;margin-top:8px;animation:blink 2s ease-in-out infinite">
+      ¡Corre! ¡Solo quedan <span id="spots">8</span> lugares disponibles en esta oferta!
+    </div>
+
+    <div class="trust-row">
+      <div class="trust-badge">🔒 Compra Segura</div>
+      <div class="trust-badge">💳 Visa / Mastercard</div>
+      <div class="trust-badge">🅿️ PayPal</div>
+    </div>
+
+    <!-- Guarantee -->
+    <div class="guarantee-box" style="padding:10px;border:none;background:transparent">
+      <img src="images/garantia1.jpg" alt="Garantía 7 días" style="width:100%;border-radius:12px;display:block" />
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- Reviews -->
+    <div class="section-heading">Algunos testimonios de nuestras alumnas 💬</div>
+
+    <div class="mini-review">
+      <div class="stars">★★★★★</div>
+      <div class="reviewer">Marcela Ríos &nbsp;·&nbsp; @marcela.manos</div>
+      <p>Quedé muy enamorada de las piezas que aprendí a hacer. Las combino con cada look y mis amigas me preguntan dónde las compré.&nbsp;😍</p>
+    </div>
+    <div class="mini-review">
+      <div class="stars">★★★★★</div>
+      <div class="reviewer">Morena Fernández &nbsp;·&nbsp; @morenadise990</div>
+      <p>Aprendí muy bien en la plataforma, es super explicativa. ¡Ya estoy vendiendo en mi Instagram! Llevo $200 en una semana, recién empezando.&nbsp;😊</p>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- Product gallery -->
+    <div style="text-align:center;margin-bottom:18px">
+      <p style="font-size:1.1rem;font-weight:900;margin-bottom:14px;color:#C8961E;line-height:1.35">Mira los estilos sofisticados de bisutería que vas a aprender a hacer conmigo 👇💛</p>
+
+      <!-- Slider estilos est1–est10 -->
+      <div class="est-slider">
+        <div class="est-track" id="estTrack">
+          <div class="est-slide"><img src="images/est1.jpg"  alt="Estilo 1" /></div>
+          <div class="est-slide"><img src="images/est2.jpg"  alt="Estilo 2" /></div>
+          <div class="est-slide"><img src="images/est3.jpg"  alt="Estilo 3" /></div>
+          <div class="est-slide"><img src="images/est4.jpg"  alt="Estilo 4" /></div>
+          <div class="est-slide"><img src="images/est5.jpg"  alt="Estilo 5" /></div>
+          <div class="est-slide"><img src="images/est6.png"  alt="Estilo 6" /></div>
+          <div class="est-slide"><img src="images/est7.png"  alt="Estilo 7" /></div>
+          <div class="est-slide"><img src="images/est8.png"  alt="Estilo 8" /></div>
+          <div class="est-slide"><img src="images/est9.png"  alt="Estilo 9" /></div>
+          <div class="est-slide"><img src="images/est10.png" alt="Estilo 10" /></div>
+        </div>
+        <div class="est-dots" id="estDots"></div>
+        <button class="dp-prev" onclick="estPrev()">‹</button>
+        <button class="dp-next" onclick="estNext()">›</button>
+      </div>
+    </div>
+
+
+    <!-- Bio -->
+    <div class="divider"></div>
+    <p style="text-align:center;font-size:1rem;font-weight:800;color:#1a1a1a;line-height:1.4;margin-bottom:18px;padding:0 4px">Estás a un paso de aprender un hobby y encima <span style="color:#C8961E">ganar dinero con eso.</span> ¿De verdad vas a dejar pasar esta oportunidad?</p>
+    <div class="bio-section">
+      <img src="images/profile.jpg" alt="Camila Marquez" />
+      <h3>Camila Marquez</h3>
+      <p>Creadora del entrenamiento <strong>Bisutería Lucrativa</strong> y apasionada por la artesanía desde pequeña, pero fue la bisutería donde me encontré de verdad — y estoy generando ingresos con ella desde 2023.</p>
+      <p>Mi historia comenzó de forma simple: vi a mi hija haciendo pulseras coloridas de mostacillas y me pareció muy divertido. Fue ahí donde empecé a inspirarme y a crear collares, pulseras y aretes parecidos a joyas, elegantes. Llamaron mucho la atención, y fue así como comencé a venderlos a amigas y familiares. Con el tiempo, me di cuenta de que podía convertirse en una fuente real de ingresos usando mi creatividad y dedicación. ✨💛</p>
+      <p>Me especialicé en técnicas de producción, empaques y estrategias de venta, y hoy vivo de lo que amo: crear bisutería creativa sin perder la elegancia.</p>
+      <p>Hoy, la bisutería artesanal es mi principal fuente de ingresos, vendo también a tiendas. Ahora quiero mostrarte que <strong>tú también puedes transformar tu pasión en ingresos.</strong> 💖💰</p>
+    </div>
+
+    <!-- Final CTA -->
+    <p style="text-align:center;font-size:0.85rem;font-weight:700;color:#1a1a1a;margin-top:22px;margin-bottom:4px;line-height:1.5">
+      HAZ CLIC EN EL BOTÓN DE ABAJO Y ADQUIERE EL ENTRENAMIENTO<br>
+      <span class="gold">BISUTERÍA LUCRATIVA + 4 BONOS EXCLUSIVOS</span>
+    </p>
+    <p style="text-align:center;font-size:0.85rem;font-weight:700;color:#1a1a1a;margin-bottom:8px">Garantiza tus bonos y tu lugar ⬇️</p>
+
+    <div class="price-section">
+      <div class="price-box">
+        <div class="pb-badge">🔥 Oferta especial</div>
+        <div class="pb-name">Bisutería Lucrativa + 4 Bonos</div>
+        <div class="pb-old" style="color:#C62828;text-decoration:line-through;font-weight:700">De $141 USD</div>
+        <div class="pb-price"><sup>USD </sup>9<span class="cents">.90</span></div>
+        <div class="pb-tag">pago único · acceso inmediato</div>
+        <div style="font-size:0.78rem;color:#777;margin-top:4px">o en <strong style="color:#1a1a1a">9x de $1.10 USD</strong></div>
+      </div>
+    </div>
+
+    <button class="cta-btn " onclick="goCheckout()" style="font-size:1.05rem;padding:20px 24px">
+      Quiero ganar dinero en casa
+    </button>
+
+    <div style="background:#C62828;color:#fff;font-weight:800;font-size:0.76rem;text-align:center;border-radius:8px;padding:7px 12px;margin-top:8px;animation:blink 2s ease-in-out infinite">
+      ¡Corre! ¡Solo quedan <span id="spots2">8</span> lugares disponibles en esta oferta!
+    </div>
+
+    <div class="trust-row">
+      <div class="trust-badge">🔒 Compra Segura</div>
+      <div class="trust-badge">💳 Visa / Mastercard</div>
+      <div class="trust-badge">🅿️ PayPal</div>
+    </div>
+
+    <!-- FAQ -->
+    <div class="divider"></div>
+    <div class="section-heading">Preguntas frecuentes ❓</div>
+
+    <div class="faq-list">
+
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          ¿Cómo voy a recibir mi acceso al entrenamiento?
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-a">
+          Inmediatamente después de completar tu compra, recibirás un <strong>e-mail con el link de acceso</strong> a la plataforma. Solo haz clic en el enlace, crea tu contraseña y ya puedes empezar. ¡Es instantáneo! 📩
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          ¿Necesito experiencia previa en artesanía?
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-a">
+          No. El entrenamiento fue creado especialmente para quienes empiezan desde cero. Camila te guía paso a paso desde la elección de materiales hasta los acabados finales. 🎀
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          ¿Cuánto necesito invertir en materiales para comenzar?
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-a">
+          Puedes comenzar con tan solo <strong>$5 a $15 USD</strong> en materiales básicos. Con eso ya puedes producir varias piezas y empezar a generar ingresos. 💰
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          ¿Por cuánto tiempo tengo acceso al contenido?
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-a">
+          El acceso es <strong>vitalicio</strong>. Puedes ver los videos siempre que quieras, a tu propio ritmo, desde cualquier dispositivo. ♾️
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          ¿Tiene garantía?
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-a">
+          Sí. Tienes <strong>7 días de garantía total</strong>. Si no te gusta por cualquier motivo, te devolvemos el 100% de tu dinero sin preguntas. El riesgo es completamente nuestro. 🏅
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          ¿Puedo vender las piezas que aprenda a hacer?
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-a">
+          ¡Sí! De hecho, ese es uno de los principales objetivos del entrenamiento. Aprenderás técnicas de producción, precios, empaques y cómo vender en redes sociales para monetizar tu bisutería desde el primer día. 💎
+        </div>
+      </div>
+
+    </div><!-- /faq-list -->
+
+  </div><!-- /sales-screen -->
+</div><!-- /screen-sales -->
+
+
+<!-- ════════════════════════════════════════════════════
+     JAVASCRIPT
+════════════════════════════════════════════════════ -->
+<script>
+  /* ── Screen navigation ── */
+  const screens = {
+    0: 'screen-landing',
+    1: 'screen-q1',
+    2: 'screen-q2',
+    3: 'screen-q3',
+    4: 'screen-q4',
+    5: 'screen-obj1',
+    6: 'screen-obj2',
+    7: 'screen-social',
+    8: 'screen-sales',
+  };
+  let currentStep = 0;
+
+  function showScreen(step) {
+    Object.values(screens).forEach(id => {
+      const el = document.getElementById(id);
+      if (el) el.classList.add('hidden');
+    });
+    const target = document.getElementById(screens[step]);
+    if (target) {
+      target.classList.remove('hidden');
+      window.scrollTo({ top: 0, behavior: 'instant' });
+    }
+    currentStep = step;
+  }
+
+  function startQuiz() { showScreen(1); }
+  function nextStep(n) { showScreen(n); }
+  function goBack(n)   { showScreen(Math.max(0, n)); }
+
+  function goCheckout() {
+    // Substitua pela URL real do checkout
+    alert('Redirigiendo a la página de pago...\n\n(Reemplaza esta función con tu URL de checkout)');
+    // window.location.href = 'https://tu-checkout.com';
+  }
+
+  /* ── Countdown timer (landing) ── */
+  (function() {
+    let total = 9 * 60 + 59;
+    const el = document.getElementById('timer');
+    if (!el) return;
+    const iv = setInterval(() => {
+      if (total <= 0) { clearInterval(iv); el.textContent = '00:00'; return; }
+      total--;
+      const m = String(Math.floor(total / 60)).padStart(2,'0');
+      const s = String(total % 60).padStart(2,'0');
+      el.textContent = m + ':' + s;
+    }, 1000);
+  })();
+
+  /* ── Scarcity spots counter ── */
+  (function() {
+    let spots = 8;
+
+    function updateSpots() {
+      const el1 = document.getElementById('spots');
+      const el2 = document.getElementById('spots2');
+      if (el1) el1.textContent = spots;
+      if (el2) el2.textContent = spots;
+    }
+
+    function scheduleNextDrop() {
+      if (spots <= 1) return;
+      // cai 1 vaga a cada 45s–90s (natural, não muito rápido)
+      const delay = Math.random() * 45000 + 45000;
+      setTimeout(() => {
+        spots--;
+        updateSpots();
+        scheduleNextDrop();
+      }, delay);
+    }
+
+    scheduleNextDrop();
+  })();
+
+  /* ── Purchase notifications ── */
+  const buyers = [
+    { name: 'María González',    country: '🇲🇽 México' },
+    { name: 'Valentina López',   country: '🇨🇴 Colombia' },
+    { name: 'Sofía Martínez',    country: '🇦🇷 Argentina' },
+    { name: 'Isabella Rodríguez',country: '🇻🇪 Venezuela' },
+    { name: 'Camila García',     country: '🇨🇱 Chile' },
+    { name: 'Lucía Hernández',   country: '🇵🇪 Perú' },
+    { name: 'Daniela Torres',    country: '🇪🇨 Ecuador' },
+    { name: 'Ana Flores',        country: '🇧🇴 Bolivia' },
+    { name: 'Paula Ramírez',     country: '🇺🇾 Uruguay' },
+    { name: 'Rosa Medina',       country: '🇵🇾 Paraguay' },
+    { name: 'Fernanda Castro',   country: '🇨🇷 Costa Rica' },
+    { name: 'Gabriela Morales',  country: '🇩🇴 R. Dominicana' },
+    { name: 'Andrea Vargas',     country: '🇬🇹 Guatemala' },
+    { name: 'Patricia Ríos',     country: '🇵🇦 Panamá' },
+    { name: 'Natalia Reyes',     country: '🇭🇳 Honduras' },
+  ];
+
+  const msgs = [
+    'acaba de adquirir Bisutería Lucrativa 🎉',
+    'se acaba de inscribir al entrenamiento ✨',
+    'acaba de garantizar su acceso 💎',
+    'se unió al entrenamiento hace un momento 🌟',
+  ];
+
+  const container = document.getElementById('toast-container');
+  let buyerIdx = Math.floor(Math.random() * buyers.length);
+
+  function showToast() {
+    const buyer = buyers[buyerIdx % buyers.length];
+    buyerIdx++;
+    const mins = Math.floor(Math.random() * 8) + 1;
+
+    const toast = document.createElement('div');
+    toast.className = 'toast';
+    toast.innerHTML = `
+      <div class="toast-icon">💍</div>
+      <div class="toast-body">
+        <div class="t-name">${buyer.name}</div>
+        <div class="t-msg">${buyer.country} · ${msgs[Math.floor(Math.random()*msgs.length)]}</div>
+        <div class="t-time">hace ${mins} min</div>
+      </div>`;
+
+    container.appendChild(toast);
+    requestAnimationFrame(() => requestAnimationFrame(() => toast.classList.add('show')));
+
+    setTimeout(() => {
+      toast.classList.remove('show');
+      setTimeout(() => toast.remove(), 500);
+    }, 4500);
+  }
+
+  /* ── FAQ toggle ── */
+  function toggleFaq(btn) {
+    const answer = btn.nextElementSibling;
+    const isOpen = answer.classList.contains('open');
+    // close all
+    document.querySelectorAll('.faq-a').forEach(a => a.classList.remove('open'));
+    document.querySelectorAll('.faq-q').forEach(q => q.classList.remove('open'));
+    if (!isOpen) {
+      answer.classList.add('open');
+      btn.classList.add('open');
+    }
+  }
+
+  /* ── Estilos slider (est1–est10) ── */
+  (function() {
+    const total = 10;
+    let cur = 0;
+
+    // build dots
+    const dotsEl = document.getElementById('estDots');
+    for (let i = 0; i < total; i++) {
+      const d = document.createElement('button');
+      d.className = 'est-dot' + (i === 0 ? ' active' : '');
+      d.onclick = () => estGo(i);
+      dotsEl.appendChild(d);
+    }
+
+    window.estGo = function(idx) {
+      cur = idx;
+      document.getElementById('estTrack').style.transform = `translateX(-${cur * 100}%)`;
+      document.querySelectorAll('.est-dot').forEach((d, i) => d.classList.toggle('active', i === cur));
+    };
+    window.estNext = () => estGo((cur + 1) % total);
+    window.estPrev = () => estGo((cur - 1 + total) % total);
+
+    // auto-advance every 3s
+    setInterval(() => estNext(), 3000);
+  })();
+
+  /* ── Depoimentos slider ── */
+  let dpCurrent = 0;
+  const dpTotal = 2;
+
+  function dpGo(idx) {
+    dpCurrent = idx;
+    const track = document.getElementById('dpTrack');
+    if (track) track.style.transform = `translateX(-${dpCurrent * 100}%)`;
+    document.querySelectorAll('.dp-dot').forEach((d, i) =>
+      d.classList.toggle('active', i === dpCurrent));
+  }
+  function dpNext() { dpGo((dpCurrent + 1) % dpTotal); }
+  function dpPrev() { dpGo((dpCurrent - 1 + dpTotal) % dpTotal); }
+
+  // Auto-advance every 4s
+  setInterval(() => {
+    if (currentStep === 7) dpNext();
+  }, 4000);
+
+  // Toasts apenas na tela 8, timing natural e aleatório
+  let toastScheduled = false;
+
+  function scheduleNextToast() {
+    const delay = Math.random() * 22000 + 20000; // entre 20s e 42s
+    setTimeout(() => {
+      if (currentStep === 8) showToast();
+      scheduleNextToast();
+    }, delay);
+  }
+
+  const _origNextStep = nextStep;
+  nextStep = function(n) {
+    _origNextStep(n);
+    if (n === 8 && !toastScheduled) {
+      toastScheduled = true;
+      // Primeira notificação aparece entre 10s e 18s após entrar
+      setTimeout(() => {
+        if (currentStep === 8) showToast();
+        scheduleNextToast();
+      }, Math.random() * 8000 + 10000);
+    }
+  };
+</script>
+
+</body>
+</html>
